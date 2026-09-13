@@ -15,8 +15,8 @@ st.set_page_config(
 st.title("Olist Order Value Analytics Dashboard")
 
 st.write(
-    "Exploratory and predictive analysis of order value "
-    "using the Brazilian E-Commerce Public Dataset."
+    "Exploratory data analysis of order value "
+    "using Olist Brazilian E-Commerce Public Dataset."
 )
 
 # -----------------------------
