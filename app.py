@@ -113,41 +113,88 @@ st.pyplot(fig)
 # Chart 3. Order Value Distribution and High-Value Threshold
 # ============================================================
 
+train_df, temp_df = train_test_split(
+    df,
+    test_size=0.30,
+    random_state=42
+)
+
+val_df, test_df = train_test_split(
+    temp_df,
+    test_size=0.50,
+    random_state=42
+)
+
+high_value_threshold = (
+    train_df["order_value"]
+    .quantile(0.80)
+)
+
+# Create classification target
+
+train_df["high_value_order"] = (
+    train_df["order_value"]
+    >= high_value_threshold
+).astype(int)
+
+test_df["high_value_order"] = (
+    test_df["order_value"]
+    >= high_value_threshold
+).astype(int)
+
+train_class_distribution = (
+    train_df["high_value_order"]
+    .value_counts()
+    .sort_index()
+)
+
+train_class_percentage = (
+    train_df["high_value_order"]
+    .value_counts(normalize=True)
+    .sort_index()
+    * 100
+)
+
 st.subheader("3. Order Value Distribution and High-Value Threshold")
 
-fig, ax = plt.subplots(figsize=(10, 5))
+# ============================================================
+# Distribution of High-Value Orders
+# ============================================================
 
-# Histogram of order values
-ax.hist(
-    df["order_value"],
-    bins=50
+# Count each class
+class_counts = (
+    train_df["high_value_order"]
+    .value_counts()
+    .sort_index()
 )
 
-# High-value threshold
-ax.axvline(
-    threshold,
-    linestyle="--",
-    linewidth=2,
-    label=f"High-value threshold: R$ {threshold:,.2f}"
+# Create figure
+fig, ax = plt.subplots(figsize=(8, 5))
+
+class_counts.plot(
+    kind="bar",
+    ax=ax
 )
 
-ax.set_xlabel("Order Value (R$)")
+# X-axis labels
+ax.set_xticks([0, 1])
+ax.set_xticklabels(
+    ["Standard Order", "High-Value Order"],
+    rotation=0
+)
+
+# Labels and title
+ax.set_xlabel("Order Class")
 ax.set_ylabel("Number of Orders")
+ax.set_title("Distribution of High-Value Orders")
 
-ax.set_title(
-    "Order Value Distribution and High-Value Threshold"
-)
+plt.tight_layout()
 
-ax.legend()
-
+# Display in Streamlit
 st.pyplot(fig)
-plt.close(fig)
 
-# Explanation below the chart
-st.info(
-    f"Orders with a value of R$ {threshold:,.2f} or above "
-    "are classified as high-value orders (top 20%)."
-)
+# Close figure to prevent overlap/memory issues
+plt.close(fig)
 
 # -----------------------------
 # Chart 4: Standard vs High-Value
