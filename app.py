@@ -109,11 +109,51 @@ ax.set_title("Number of Items vs Order Value")
 
 st.pyplot(fig)
 
+# ============================================================
+# Chart 3. Order Value Distribution and High-Value Threshold
+# ============================================================
+
+st.subheader("3. Order Value Distribution and High-Value Threshold")
+
+fig, ax = plt.subplots(figsize=(10, 5))
+
+# Histogram of order values
+ax.hist(
+    df["order_value"],
+    bins=50
+)
+
+# High-value threshold
+ax.axvline(
+    threshold,
+    linestyle="--",
+    linewidth=2,
+    label=f"High-value threshold: R$ {threshold:,.2f}"
+)
+
+ax.set_xlabel("Order Value (R$)")
+ax.set_ylabel("Number of Orders")
+
+ax.set_title(
+    "Order Value Distribution and High-Value Threshold"
+)
+
+ax.legend()
+
+st.pyplot(fig)
+plt.close(fig)
+
+# Explanation below the chart
+st.info(
+    f"Orders with a value of R$ {threshold:,.2f} or above "
+    "are classified as high-value orders (top 20%)."
+)
+
 # -----------------------------
-# Chart 3: Standard vs High-Value
+# Chart 4: Standard vs High-Value
 # -----------------------------
 
-st.subheader("3. Number of Items by Order Classification")
+st.subheader("4. Number of Items by Order Classification")
 
 fig, ax = plt.subplots()
 
