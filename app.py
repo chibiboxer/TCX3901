@@ -77,12 +77,6 @@ ax.hist(
     bins=50
 )
 
-ax.axvline(
-    threshold,
-    linestyle="--",
-    label=f"80th percentile: R$ {threshold:,.2f}"
-)
-
 ax.set_xlabel("Order Value (R$)")
 ax.set_ylabel("Number of Orders")
 ax.set_title("Distribution of Order Value")
@@ -201,7 +195,7 @@ plt.close(fig)
 # Chart 4: Standard vs High-Value
 # -----------------------------
 
-st.subheader("4. Number of Items by Order Classification")
+st.subheader("4. High-Value Order Versus Standard-Value Order Characteristics")
 
 fig, ax = plt.subplots()
 
